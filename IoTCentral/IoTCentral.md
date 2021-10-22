@@ -150,11 +150,11 @@ Dentro de las opciones de modelo ahora seleccionamos **Vistas**
 <p align="center"><img src="./images/iotcentral30.png" width ="1200"\></p>
 
 Existen 3 tipos de vistas a crear, en este caso seleccionamos **Visualización de dispositivo**
-<p align="center"><img src="./images/iotcentral31.png" width ="1200"\></p>
+<p align="center"><img src="./images/iotcentral31.PNG" width ="1200"\></p>
 
 
 En el nuevo panel escogemos **Comenzar por un objeto visual**
-<p align="center"><img src="./images/iotcentral32.png" width ="1200"\></p>
+<p align="center"><img src="./images/iotcentral32.PNG" width ="1200"\></p>
 
 Dentro de las opciones de objetos visuales seleccionamos y arrastramos al espacio en blanco de la derecha  **Último valor conocido (LKV)**
 <p align="center"><img src="./images/iotcentral33.png" width ="1200"\></p>
