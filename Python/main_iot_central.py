@@ -2,6 +2,7 @@
 # Copyright (c) G&S Gestion y Sistemas. All rights reserved.
 # Licensed under the MIT License. See License.txt in the project root for
 # license information.
+# inspirado en: https://github.com/Azure/azure-iot-sdk-python/tree/master/azure-iot-device/samples/pnp 
 # --------------------------------------------------------------------------
 import os
 import asyncio
@@ -20,7 +21,7 @@ import time
 import subprocess
 import ctypes
 
-
+intruso_val = 0
 #####################################################
 # SERIAL PORT CONFIGURATION
 SERIAL_PORT = "COM4" 
@@ -38,14 +39,16 @@ model_id = "dtmi:iotcentralgyslorawan:HandsOnLabDevice346;1"
 # depending on what commands the DTMI defines
 
 async def ultrasound_distance_handler(values):
+    global intruso_val
     if values:
         print(
             "Devuelve el valor de disntancia asignado  {since}".format(
                 since=values
             )
         )
+        intruso_val = 0
+        
     print("Done generating")
-
 
 # END COMMAND HANDLERS
 #####################################################
@@ -202,9 +205,9 @@ async def main():
         #    else "global.azure-devices-provisioning.net"
         #)
 
-        id_scope = "0ne00385F45" #ambito del id #os.getenv("IOTHUB_DEVICE_DPS_ID_SCOPE")
-        registration_id = "2mv5jr2pqu2" #os.getenv("IOTHUB_DEVICE_DPS_DEVICE_ID")
-        symmetric_key = "dCWzOMX6WGzQKdkkq+HEpXFiPnvlQE9N81420FdW+hg=" #os.getenv("IOTHUB_DEVICE_DPS_DEVICE_KEY")
+        id_scope = "" #ambito del id #os.getenv("IOTHUB_DEVICE_DPS_ID_SCOPE")
+        registration_id = "" #os.getenv("IOTHUB_DEVICE_DPS_DEVICE_ID")
+        symmetric_key = "" #os.getenv("IOTHUB_DEVICE_DPS_DEVICE_KEY")
         registration_result = await provision_device(
             provisioning_host, id_scope, registration_id, symmetric_key, model_id
         )
@@ -242,8 +245,7 @@ async def main():
     ################################################
     # Set and read desired property (target temperature)
 
-    intruso_val = 0 # 
-    await device_client.patch_twin_reported_properties({"Intruso": intruso_val})
+
 
     ################################################
     # Register callback and Handle command (reboot)
@@ -263,23 +265,31 @@ async def main():
     # Send telemetry (current temperature)
 
     async def send_telemetry():
+        global intruso_val 
         print("Sending telemetry for temperature")
         estado_bloqueo = False
         
         notificacion_enviada = True
         
+        await device_client.patch_twin_reported_properties({"Intruso": intruso_val})
+        last_intruso_val = intruso_val
+
         while True:
-  
+            if last_intruso_val != intruso_val:
+                await device_client.patch_twin_reported_properties({"Intruso": intruso_val})
+                last_intruso_val = intruso_val
+
             #####################################################################
             # SERIAL PORT READ
             line = ser.readline()
             print(line)
 
-            line = line.decode("utf-8")[:-2]
+            line = line.decode("utf-8")[:-3]
             valores = line.split("|")
             print(valores)
             keys = ["Ultrasonido","Temperatura","Humedad", "Ldr", "Potenciometro", "Servo"]
             send_data ={}
+            send_data["Notificacion"] =0
             i= 0
 
             for valor in valores:
@@ -287,34 +297,31 @@ async def main():
                     send_data[keys[i]]=float(valor[1:])
                     i+=1
             
-            if len(send_data) == 6:
+            if len(valores) == 6:
                 print("verificar ultrasonido")
                 #if ctypes.windll.user32.GetForegroundWindow() != 0:
 
                 #####################################################################
-                # BLOQUEA PC
-                if int(send_data["Ultrasonido"]) <= 500 and ctypes.windll.user32.GetForegroundWindow() != 0:
+                # BLOQUEA PC 60
+                if int(send_data["Ultrasonido"]) >= 500 and ctypes.windll.user32.GetForegroundWindow() != 0:
                     # Bloquea computadora
-                    # ctypes.windll.user32.LockWorkStation()
+                    #ctypes.windll.user32.LockWorkStation()
                     print("INICIA El bloqueo")
                     if estado_bloqueo != True:
                         estado_bloqueo = True
 
                 #####################################################################
-                # NOTIFICA DE UN INTRUSO NUEVO
-                if int(send_data["Ultrasonido"]) <= 500 : # and ctypes.windll.user32.GetForegroundWindow() == 0:
+                # NOTIFICA DE UN INTRUSO NUEVO 60
+                if int(send_data["Ultrasonido"]) <= 500: #and ctypes.windll.user32.GetForegroundWindow() == 0:
 
                     if notificacion_enviada==False:
                         print("NOTIFICA Intruso")
                         notificacion_enviada = True
-
+                        send_data["Notificacion"] =1
                         #"""
                         intruso_val = 1  # Initial
                         await device_client.patch_twin_reported_properties({"Intruso": intruso_val})
-
-                        intruso_val = 0  # Initial
-                        await device_client.patch_twin_reported_properties({"Intruso": intruso_val})
-                        #"""
+                        
                 else:
                     notificacion_enviada = False
 

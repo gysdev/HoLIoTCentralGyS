@@ -202,9 +202,9 @@ async def main():
         #    else "global.azure-devices-provisioning.net"
         #)
 
-        id_scope = "0ne00385F45" #ambito del id #os.getenv("IOTHUB_DEVICE_DPS_ID_SCOPE")
-        registration_id = "2mv5jr2pqu2" #os.getenv("IOTHUB_DEVICE_DPS_DEVICE_ID")
-        symmetric_key = "dCWzOMX6WGzQKdkkq+HEpXFiPnvlQE9N81420FdW+hg=" #os.getenv("IOTHUB_DEVICE_DPS_DEVICE_KEY")
+        id_scope = "" #ambito del id #os.getenv("IOTHUB_DEVICE_DPS_ID_SCOPE")
+        registration_id = "" #os.getenv("IOTHUB_DEVICE_DPS_DEVICE_ID")
+        symmetric_key = "" #os.getenv("IOTHUB_DEVICE_DPS_DEVICE_KEY")
         registration_result = await provision_device(
             provisioning_host, id_scope, registration_id, symmetric_key, model_id
         )
