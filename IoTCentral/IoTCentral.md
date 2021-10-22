@@ -18,7 +18,7 @@ En caso de que no tengas una cuenta de Microsoft, Outlook o Hotmail puedes segui
 Para crear una cuenta de IoT Central ingresaremos a la página pricinpal de IoT Central: <a href="https://apps.azureiotcentral.com/" target="_blank">https://apps.azureiotcentral.com/</a> 
 
 Dentro de la pagina seleccionamos el icono del ángulo superior derecha de Iniciar sesión con una cuenta
-<p align="center"><img src="./images/iotcentral9.png" width="900"\></p>
+<p align="center"><img src="./images/iotcentral9.PNG" width="900"\></p>
 
 Ingresamos el correo anteriormente creado u otra cuenta Outlook y click en **siguiente**
 <p align="center"><img src="./images/iotcentral10.png" width="400"\></p>
@@ -32,22 +32,22 @@ Indicamos que queremos mantener la sesión iniciada, presionar en botón de **S�
 ### Crear una aplicacion 
 
 En la ventana principal de IoT Central dar click en **Compilar** y luego en **Crear una Aplicacion**
-<p align="center"><img src="./images/iotcentral14.png" \></p>
+<p align="center"><img src="./images/iotcentral14.PNG" \></p>
 
 En la espacio de nueva aplicacion ingresar:
 - **Nombre de la aplicacion**: AplicacionDe[Inicial nombre][Inicial apellidos]XX 
 - **URL**: Repite el nombre de aplicacion
 - **Plantilla de aplicación**: Aplicacion personalizada 
 - **Plan de precios**: Gratuito
-<p align="center"><img src="./images/iotcentral15.png" \></p>
+<p align="center"><img src="./images/iotcentral15.PNG" \></p>
 
 Dar click en **Crear**
 
-<p align="center"><img src="./images/iotcentral16.png" width ="700"\></p>
+<p align="center"><img src="./images/iotcentral16.PNG" width ="700"\></p>
 
 Nos abrirá una nueva ventana donde muestra las características de nuestra aplicación 
 
-<p align="center"><img src="./images/iotcentral17.png" width ="1200"\></p>
+<p align="center"><img src="./images/iotcentral17.PNG" width ="1200"\></p>
 
 ### Crear plantilla de dispositivos
 
